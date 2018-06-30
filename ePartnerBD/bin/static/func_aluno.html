@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<img
+	src="https://uploaddeimagens.com.br/images/001/486/753/original/logo2.png?1530228786">
+<head>
+<meta charset="utf-8">
+<title>Aluno</title>
+
+<script src="js/jquery.js"></script>
+<link href="css/bulma.css" rel=stylesheet>
+<!-- Inicio funcoes -->
+<script>
+	$(document).ready(
+			function() {
+				$("#busca-ra").click(
+						function() {
+							var ra = $("#ra").val();
+
+							$("#dadosAluno").empty();
+
+							var url = "/func_aluno/" + ra + "";
+
+							$.getJSON(url, function(data) {
+
+								var itens = [];
+
+								$.each(data, function(i) {
+									itens.push("<tr><td>" + i + "</td><td>"
+											+ this.ra + "</td><td>" + this.nome
+											+ "</td><td>" + this.curso
+											+ "</td><td>" + this.email
+											+ "</td></tr>");
+								});
+								$("#dadosAluno").append(itens);
+							});
+						});
+
+				$("#inserir-aluno").click(
+						function() {
+							var c_ra = $("#c_ra").val();
+							var c_nome_completo = $("#c_nome_completo").val();
+							var c_email = $("#c_email").val();
+							var c_senha = $("#c_senha").val();
+							var c_curso = $("#c_curso").val();
+							var c_data_nasc = $("#c_data_nasc").val();
+							var c_semestre = $("#c_semestre").val();
+
+							var url = "/func_aluno/" + c_ra + "/"
+									+ c_nome_completo + "/" + c_email + "/"
+									+ c_senha + "/" + c_curso + "/"
+									+ c_data_nasc + "/" + c_semestre + "/";
+
+							$.getJSON(url, function(data) {
+							});
+						});
+
+				$("#remove-ra").click(function() {
+					var remove = $("#remove").val();
+
+					var url = "/func_aluno/remover/" + remove + "";
+
+					$.getJSON(url, function(data) {
+					});
+				});
+
+			});
+</script>
+
+<!-- Fim funcoes -->
+</head>
+<body>
+
+	<div class="columns" style="padding: 30px">
+		<div class="column">
+			<div id="painelBusca" class="">
+				<!-- Inserir novo -->
+				<div class="tag">Inserir novo</div>
+				<div class="columns" id="inserir-novo"
+					style="background: whitesmoke; height: 50px; border-radius: 2px">
+					<div class="field column is-one-fifth">
+						<div class="control">
+							<input id="c_ra" type="text" class="input is-small"
+								placeholder="R.A.">
+						</div>
+					</div>
+					<div class="field column is-one-fifth">
+						<div class="control">
+							<input id="c_nome_completo" type="text" class="input is-small"
+								placeholder="Nome completo">
+						</div>
+					</div>
+					<div class="field column is-one-fifth">
+						<div class="control">
+							<input id="c_email" type="text" class="input is-small"
+								placeholder="E-mail">
+						</div>
+					</div>
+					<div class="field column is-one-fifth">
+						<div class="control">
+							<input id="c_senha" type="text" class="input is-small"
+								placeholder="Senha temporária">
+						</div>
+					</div>
+				</div>
+
+				<!-- Continuando Inserir novo -->
+				<div class="columns" id="inserir-novo"
+					style="background: whitesmoke; height: 50px; border-radius: 2px">
+					<div class="field column is-one-fifth">
+						<div class="control">
+							<input id="c_curso" type="text" class="input is-small"
+								placeholder="Curso">
+						</div>
+					</div>
+					<div class="field column is-one-fifth">
+						<div class="control">
+							<input id="c_data_nasc" type="text" class="input is-small"
+								placeholder="Data de Nascimento">
+						</div>
+					</div>
+					<div class="field column is-one-fifth">
+						<div class="control">
+							<input id="c_semestre" type="text" class="input is-small"
+								placeholder="Semestre">
+						</div>
+					</div>
+					<div class="field column is-one-fifth">
+						<div class="control">
+
+							<a id="inserir-aluno" class="button is-success is-small">Inserir</a>
+						</div>
+					</div>
+				</div>
+
+
+
+
+				<!-- Fim inserir novo -->
+
+				<div class="tag">Buscar</div>
+				<!-- Inicio da busca -->
+				<div class="columns"
+					style="background: whitesmoke; border-radius: 5px">
+					<div class="field column has-addons">
+						<div class="control">
+							<input id="ra" type="text" class="input is-small"
+								placeholder="Digite um termo para buscar">
+						</div>
+						<div class="control">
+							<a id="busca-ra" class="button is-success is-small">Buscar</a>
+						</div>
+					</div>
+				</div>
+				<!-- Fim da busca -->
+			</div>
+			<br>
+
+
+			<!-- Inicio do remover -->
+			<div class="tag">Remover</div>
+			<div class="columns"
+				style="background: whitesmoke; border-radius: 5px">
+				<div class="field column has-addons">
+					<div class="control">
+						<input id="remove" type="text" class="input is-small"
+							placeholder="Digite um ra para remover">
+					</div>
+					<div class="control">
+						<a id="remove-ra" class="button is-success is-small">Remover</a>
+					</div>
+				</div>
+			</div>
+			<!-- Fim do remover -->
+
+
+
+			<br> <br>
+			<!-- Inicio da tabela -->
+			<table class="table is-narrow is-hoverable is-fullwidth is-bordered">
+				<caption class="title is-4">Alunos</caption>
+				<thead>
+					<tr>
+						<th class="is-dark">*</th>
+						<th class="is-dark">RA</th>
+						<th class="is-dark">Nome</th>
+						<th class="is-dark">Curso</th>
+						<th class="is-dark">E-mail</th>
+					</tr>
+				</thead>
+				<tbody id="dadosAluno">
+				</tbody>
+			</table>
+			<!-- Fim da tabela -->
+		</div>
+	</div>
+</body>
+</html>

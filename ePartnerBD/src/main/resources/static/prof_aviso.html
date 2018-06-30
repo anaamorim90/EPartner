@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<img
+	src="https://image.ibb.co/jsRTCJ/logo_aviso.png">
+<head>
+<meta charset="utf-8">
+
+<link href="css/bulma.css" rel=stylesheet>
+<!-- Inicio funcoes -->
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+<!--  <link href="css/bootstrap.min.css" rel=stylesheet>  esse comando diminui a fonte da página-->
+
+<script>
+	$(document).ready(
+			function() {
+				$('form').submit(function(e) {
+
+					e.preventDefault();
+
+					var c_dataInicial = $('#c_dataInicial').val().trim();
+					var c_dataFinal = $('#c_dataFinal').val().trim();
+					var c_materia = $('#c_materia').val().trim();
+					var c_descricao = $('#c_descricao').val().trim();
+
+					$.post("/prof_aviso/add", JSON.stringify({
+						'c_dataInicial' : c_dataInicial,
+						'c_dataFinal' : c_dataFinal,
+						'c_materia' : c_materia,
+						'c_descricao' : c_descricao
+					}), function(data) {
+
+						if (data[0].status == 0) {
+							window.location.href = '/prof_aviso.html';
+
+						} else {
+							window.location.href = '/prof_aviso.html';
+
+						}
+
+					}, "json");
+
+				});
+
+				$("#busca-aviso").click(
+						function() {
+							var aviso = $("#aviso").val();
+
+							$("#dadosAviso").empty();
+
+							var url = "/prof_aviso/" + aviso + "";
+
+							$.getJSON(url, function(data) {
+
+								var itens = [];
+
+								$.each(data, function(i) {
+									itens.push("<tr><td>" + i + "</td><td>"
+											+ this.dataInicial + "</td><td>"
+											+ this.dataFinal + "</td><td>"
+											+ this.materia + "</td><td>"
+											+ this.descricao + "</td></tr>");
+								});
+								$("#dadosAviso").append(itens);
+							});
+
+						});
+
+			});
+</script>
+
+</head>
+<body>
+
+	<!-- Fim funcoes -->
+	<form class="form-horizontal" method="post" id="form">
+		<div class="columns" style="padding-left: 300px">
+			<div class="column">
+
+				<div class="columns" id="inserir-novo"
+					style="background: white; height: 50px; border-radius: 2px">
+
+					<div class="field column is-one-fifth">
+						<div class="control">
+							<input id="c_dataInicial" type="text" class="input is-small"
+								placeholder="Data inicial">
+						</div>
+					</div>
+
+
+					<div class="field column is-one-fifth">
+						<div class="control">
+							<input id="c_descricao" type="text" class="input is-small"
+								style="height: 85px" placeholder="Digite o aviso aqui">
+						</div>
+					</div>
+
+						<!-- Inicio da busca -->
+							<div class="field column is-one-fifth">
+								<div class="control" style="left: 70px">
+									<input id="aviso" type="text" class="input is-small" 
+										style="height: 85px" placeholder="Digite um termo para buscar">
+								</div>
+							</div>
+
+				</div>
+
+				<div class="columns" id="inserir-novo2"
+					style="background: white; height: 50px; border-radius: 3px">
+
+					<div class="field column is-one-fifth">
+						<div class="control">
+							<input id="c_dataFinal" type="text" class="input is-small"
+								placeholder="Data final">
+						</div>
+					</div>
+				</div>
+
+				<div class="columns" id="inserir-novo3"
+					style="background: white; height: 50px; border-radius: 3px">
+
+					<div class="field column is-one-fifth">
+						<div class="control">
+							<input id="c_materia" type="text" class="input is-small"
+								placeholder="Matéria">
+						</div>
+					</div>
+
+					<div class="field column is-one-fifth">
+						<div class="control">
+							<button id="inserirAviso" type="submit" style="left: 130px"
+								class="button is-warning is-small">Inserir</button>
+						</div>
+					</div>
+					<div class="field column has-addons">
+						<div class="control">
+							<a id="busca-aviso" style="left: 190px"
+								class="button is-warning is-small">Buscar</a>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</form>
+
+	<!-- Fim da busca -->
+	<br>
+	<br>
+	<div class="columns" style="padding-left: 300px">
+
+		<!-- Inicio da tabela -->
+		<table class="table is-narrow is-hoverable is-bordered">
+			<thead>
+				<tr>
+					<th width="10" align="center"
+						background="https://image.ibb.co/hHak9y/fundo.png"
+						class="is-clean"><font color="white">*</font></th>
+					<th width="115" align="center"
+						background="https://image.ibb.co/hHak9y/fundo.png"
+						class="is-clean"><font color="white">Data Inicial</font></th>
+					<th width="115" align="center"
+						background="https://image.ibb.co/hHak9y/fundo.png"
+						class="is-clean"><font color="white">Data Final</font></th>
+					<th width="150" align="center"
+						background="https://image.ibb.co/hHak9y/fundo.png"
+						class="is-clean"><font color="white">Matéria</font></th>
+					<th width="290" align="center"
+						background="https://image.ibb.co/hHak9y/fundo.png"
+						class="is-clean"><font color="white">Descrição</font></th>
+				</tr>
+			</thead>
+			<tbody id="dadosAviso">
+			</tbody>
+		</table>
+		<!-- Fim da tabela -->
+
+	</div>
+</body>
+</html>

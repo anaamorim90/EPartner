@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<img
+	src="https://uploaddeimagens.com.br/images/001/486/753/original/logo2.png?1530228786">
+<head>
+<meta charset="utf-8">
+
+<title>ePartner</title>
+
+<script src="js/jquery.js"></script>
+<link href="css/bulma.css" rel=stylesheet>
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.0.8/css/fontawesome.css">
+
+<!-- Inicio funcoes -->
+<script>
+	function removerProfessor() {
+		var e_matricula = $("#modal #e_matricula").val();
+		var e_email = $("#modal #e_email").val();
+
+		var url = "/func_professor/" + e_email + "/" + e_matricula + ""
+
+		$.getJSON(url, function(data) {
+		});
+	}
+
+	function openModal(i) {
+
+		var a = document.getElementById("modal");
+		a.classList.add("is-active");
+
+		dados = {
+			1 : document.getElementById("matricula" + i).innerText,
+			2 : document.getElementById("nome" + i).innerText,
+			3 : document.getElementById("email" + i).innerText,
+			4 : document.getElementById("disciplinas" + i).innerText
+		};
+
+		b = document.getElementById("box");
+		b.innerHTML = ('<caption class="title is-4">Dados</caption><div class="columns">'
+				+ '<div class="column">'
+				+ '<div class="tag">Matricula</div><input type="text" id="e_matricula" class="input is-small" value="' + dados[1] + '">'
+				+ '<div class="tag">Nome</div><input type="text" id="e_nome" class="input is-small" value="' + dados[2] + '">'
+				+ '</div>'
+				+ '<div class="column">'
+				+ '<div class="tag">E-mail</div><input type="text" id="e_email" class="input is-small" value="' + dados[3] + '">'
+				+ '<div class="tag">Disciplinas</div><input type="text" id="e_disciplinas" class="input is-small" value="' + dados[4] + '">'
+				+ '</div>'
+				+ '</div>'
+				+ '<div class="button is-success salvar-professor" id="salvar-professor">Salvar</div>'
+				+ '&nbsp;&nbsp;&nbsp;'
+				+ '<div class="button is-danger remover-professor" id="remover-professor" onclick="removerProfessor()">Excluir</div>');
+	}
+</script>
+
+<script>
+	$(document)
+			.ready(
+					function() {
+
+						$("#busca-matricula")
+								.click(
+										function() {
+											var matricula = $("#matricula")
+													.val();
+
+											$("#dadosProfessor").empty();
+
+											var url = "/func_professor/"
+													+ matricula + "";
+
+											$
+													.getJSON(
+															url,
+															function(data) {
+																var itens = [];
+
+																$
+																		.each(
+																				data,
+																				function(
+																						i) {
+																					itens
+																							.push('<tr>'
+																									+ '<td><a id="'
+																									+ i
+																									+ '" href="javascript:openModal('
+																									+ i
+																									+ ')">Editar</a></td>'
+																									+ '<td id="matricula' + i + '">'
+																									+ this.matricula
+																									+ '</td><td id="nome' + i + '">'
+																									+ this.nome
+																									+ '</td><td id="email' + i + '">'
+																									+ this.email
+																									+ '</td><td id="disciplinas' + i + '">'
+																									+ this.disciplinas
+																									+ '</td>'
+																									+ '</tr>');
+																				});
+
+																$(
+																		"#dadosProfessor")
+																		.append(
+																				itens);
+															});
+										});
+
+						$("#inserir-professor").click(
+								function() {
+									var c_matricula = $("#c_matricula").val();
+									var c_nome_completo = $("#c_nome_completo")
+											.val();
+									var c_email = $("#c_email").val();
+									var c_senha = $("#c_senha").val();
+
+									var url = "/func_professor/" + c_matricula
+											+ "/" + c_nome_completo + "/"
+											+ c_email + "/" + c_senha + "";
+
+									$.getJSON(url, function(data) {
+									});
+								});
+
+						$(".modal-close, .modal-background").click(function() {
+							$("html").removeClass("has-modal-open");
+							$(this).parent().removeClass("is-active");
+						});
+
+					});
+</script>
+
+<!-- Fim funcoes -->
+</head>
+<body>
+	<div class="columns" style="padding: 30px">
+		<div class="column">
+			<div id="painelBusca" class="">
+				<!-- Inserir novo -->
+				<div class="tag">Inserir novo</div>
+				<div class="columns" id="inserir-novo"
+					style="background: whitesmoke; height: 50px; border-radius: 2px">
+					<div class="field column is-one-fifth">
+						<div class="control">
+							<input id="c_matricula" type="text" class="input is-small"
+								placeholder="Matrícula">
+						</div>
+					</div>
+					<div class="field column is-one-fifth">
+						<div class="control">
+							<input id="c_nome_completo" type="text" class="input is-small"
+								placeholder="Nome completo">
+						</div>
+					</div>
+					<div class="field column is-one-fifth">
+						<div class="control">
+							<input id="c_email" type="text" class="input is-small"
+								placeholder="E-mail">
+						</div>
+					</div>
+					<div class="field column is-one-fifth">
+						<div class="control">
+							<input id="c_senha" type="text" class="input is-small"
+								placeholder="Senha temporária">
+						</div>
+					</div>
+					<div class="field column is-one-fifth">
+						<div class="control">
+							<a id="inserir-professor" class="button is-success is-small">Inserir</a>
+						</div>
+					</div>
+				</div>
+				<!-- Fim inserir novo -->
+				<!-- Inicio da busca -->
+				<div class="tag">Buscar</div>
+				<div class="columns"
+					style="background: whitesmoke; border-radius: 2px">
+					<div class="field column has-addons">
+						<div class="control">
+							<input id="matricula" type="text" class="input"
+								placeholder="Digite um termo para buscar">
+						</div>
+						<div class="control">
+							<a id="busca-matricula" class="button is-info">Buscar</a>
+						</div>
+					</div>
+				</div>
+				<!-- Fim da busca -->
+			</div>
+			<br> <br>
+			<!-- Inicio da tabela -->
+			<table class="table is-narrow is-hoverable is-fullwidth">
+				<caption class="title is-4">Professores</caption>
+				<thead>
+					<tr>
+						<th class="is-dark"></th>
+						<th class="is-dark">Matricula</th>
+						<th class="is-dark">Nome</th>
+						<th class="is-dark">E-mail</th>
+						<th class="is-dark">Disciplinas</th>
+					</tr>
+				</thead>
+				<tbody id="dadosProfessor">
+				</tbody>
+			</table>
+			<!-- Fim da tabela -->
+			<!-- Modal -->
+			<div id="modal" class="modal">
+				<div class="modal-background"></div>
+				<div class="modal-content">
+					<div class="box" id="box"></div>
+				</div>
+				<button class="modal-close"></button>
+			</div>
+			<!-- Fim modal -->
+		</div>
+	</div>
+</body>
+</html>
